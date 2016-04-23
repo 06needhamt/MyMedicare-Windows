@@ -1,0 +1,6 @@
+[submodule "Windows-Phone-Bundle"]
+	path = Windows-Phone-Bundle
+	url = https://github.com/06needhamt/Windows-Phone-Bundle.git
+[submodule "Windows-Desktop-Bundle"]
+	path = Windows-Desktop-Bundle
+	url = https://github.com/06needhamt/Windows-Desktop-Bundle
