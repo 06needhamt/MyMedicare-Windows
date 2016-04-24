@@ -4,9 +4,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Runtime.Serialization.Json;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.Storage.FileProperties;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -25,6 +28,8 @@ namespace MyMedicare
     /// </summary>
     public sealed partial class RegisterPage : Page
     {
+        private UserDetails details;
+
         public RegisterPage()
         {
             this.InitializeComponent();
@@ -35,15 +40,15 @@ namespace MyMedicare
             Frame.GoBack();
         }
 
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        private async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            if (!CheckFormData())
+            if (!await CheckFormData())
             {
                 Debug.WriteLine("An Error occurred while registering");
             }
         }
 
-        private bool CheckFormData()
+        private async Task<bool> CheckFormData()
         {
             string username = txtUsername.Text;
             string password = txtPassword.Password;
@@ -66,7 +71,111 @@ namespace MyMedicare
                 dialog.ShowAsync();
                 return false;
             }
+            if (Convert.ToInt32(age) < 0)
+            {
+                MessageDialog dialog = new MessageDialog("Age can not be negative");
+                dialog.ShowAsync();
+                return false;
+            }
+            if (phoneNumber.Length != 11)
+            {
+                MessageDialog dialog = new MessageDialog("Phone number must be 11 digits");
+                dialog.ShowAsync();
+                return false;
+            }
+            if (!password.Equals(ReEnterPassword))
+            {
+                MessageDialog dialog = new MessageDialog("Passwords do not match");
+                dialog.ShowAsync();
+                return false;
+            }
+            if (await ReadUserDetails() || details == null)
+            {
+                Debug.WriteLine("No user details found or an error occurred");
+                details = UserDetails.GetInstance();
+            }
+            if (UserNameExists(username))
+            {
+                Debug.WriteLine("User " + username + " already exists");
+                return false;
+            }
+            User newUser = new User(username,password.ToCharArray(),firstname,lastName,
+                Convert.ToInt32(age),address1,address2,phoneNumber,gpName);
+            details.AddUser(newUser);
+            if (await WriteUserDetails(details))
+            {
+                Debug.WriteLine("Error writing user details");
+                return false;
+            }
             return true;
+        }
+
+        private bool UserNameExists(string username)
+        {
+            foreach (User u in details.Users)
+            {
+                if (u.Username.Equals(username))
+                {
+                    MessageDialog dialog = new MessageDialog("Username " + username + " already exists");
+                    dialog.ShowAsync();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private async Task<bool> WriteUserDetails(UserDetails details)
+        {
+            StorageFile file;
+            MemoryStream stream = new MemoryStream();
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(UserDetails));
+            serializer.WriteObject(stream,details);
+            IStorageItem item = await ApplicationData.Current.LocalFolder.TryGetItemAsync("users.dat");
+            if (item == null)
+            {
+                file = await ApplicationData.Current.LocalFolder.CreateFileAsync("users.dat",
+                    Windows.Storage.CreationCollisionOption.ReplaceExisting);
+            }
+            else
+            {
+                file = await ApplicationData.Current.LocalFolder.GetFileAsync("users.dat");
+                await file.DeleteAsync();
+                file = await ApplicationData.Current.LocalFolder.CreateFileAsync("users.dat",
+                    Windows.Storage.CreationCollisionOption.ReplaceExisting);
+            }
+            var fs = await file.OpenAsync(FileAccessMode.ReadWrite);
+            byte[] buffer = new byte[stream.Length];
+            await Windows.Storage.FileIO.WriteBytesAsync(file,buffer);
+            await stream.FlushAsync();
+            stream.Dispose();
+            fs.Dispose();
+            return true;
+        }
+
+        private async Task<bool> ReadUserDetails()
+        {
+            try
+            {
+                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync("users.dat");
+                var fs = await file.OpenAsync(FileAccessMode.Read);
+                BasicProperties fileProperties = await file.GetBasicPropertiesAsync();
+                byte[] buffer = new byte[fileProperties.Size];
+                MemoryStream stream = new MemoryStream();
+                stream.Read(buffer, 0, buffer.Length);
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(UserDetails));
+                details = (UserDetails) serializer.ReadObject(stream);
+                await stream.FlushAsync();
+                stream.Dispose();
+                fs.Dispose();
+                return true;
+            }
+            catch (FileNotFoundException ex)
+            {
+                StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync("users.dat");
+                details = UserDetails.GetInstance();
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -1,22 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace MyMedicare
 {
+    [DataContract()]
     public class User
     {
+        [DataMember()]
         private string username;
+        [DataMember()]
         private char[] password;
+        [DataMember()]
         private string firstName;
+        [DataMember()]
         private string lastName;
+        [DataMember()]
         private int age;
+        [DataMember()]
         private string address1;
+        [DataMember()]
         private string address2;
+        [DataMember()]
         private string phoneNumber;
+        [DataMember()]
         private string gpName;
+        [DataMember()]
         private float fontSize;
+        [DataMember()]
         private int fontColour;
+        [DataMember()]
         private int backgroundColour;
 
         /// <summary>Initializes a new instance of the User class.</summary>

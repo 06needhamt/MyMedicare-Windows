@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace MyMedicare
 {
+    [DataContract()]
     class UserDetails
     {
-        public List<User> Users { get; set; }
+        [DataMember()]
+        private List<User> users;
+
         private static UserDetails instance;
 
         private UserDetails()
@@ -30,6 +34,12 @@ namespace MyMedicare
         public void RemoveUser(User u)
         {
             Users.Remove(u);
+        }
+
+        public List<User> Users
+        {
+            get { return users; }
+            set { users = value; }
         }
     }
 }
