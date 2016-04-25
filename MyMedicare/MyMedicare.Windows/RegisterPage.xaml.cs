@@ -41,15 +41,15 @@ namespace MyMedicare
             Frame.GoBack();
         }
 
-        private async void btnLogin_Click(object sender, RoutedEventArgs e)
+        private async void btnRegister_Click(object sender, RoutedEventArgs e)
         {
-            if (!await CheckFormData())
+            if (!await RegisterNewUser())
             {
                 Debug.WriteLine("An Error occurred while registering");
             }
         }
 
-        private async Task<bool> CheckFormData()
+        private async Task<bool> RegisterNewUser()
         {
             string username = txtUsername.Text;
             string password = txtPassword.Password;
@@ -69,25 +69,25 @@ namespace MyMedicare
                 string.IsNullOrEmpty(ReEnterPassword)) // if a required field is not filled
             {
                 MessageDialog dialog = new MessageDialog("All Fields Except Address 2 are required");
-                dialog.ShowAsync();
+                await dialog.ShowAsync();
                 return false;
             }
             if (Convert.ToInt32(age) < 0)
             {
                 MessageDialog dialog = new MessageDialog("Age can not be negative");
-                dialog.ShowAsync();
+                await dialog.ShowAsync();
                 return false;
             }
             if (phoneNumber.Length != 11)
             {
                 MessageDialog dialog = new MessageDialog("Phone number must be 11 digits");
-                dialog.ShowAsync();
+                await dialog.ShowAsync();
                 return false;
             }
             if (!password.Equals(ReEnterPassword))
             {
                 MessageDialog dialog = new MessageDialog("Passwords do not match");
-                dialog.ShowAsync();
+                await dialog.ShowAsync();
                 return false;
             }
             if (!await ReadUserDetails() || details == null)
@@ -95,7 +95,7 @@ namespace MyMedicare
                 Debug.WriteLine("No user details found or an error occurred");
                 details = UserDetails.GetInstance();
             }
-            if (UserNameExists(username))
+            if (await UserNameExists(username))
             {
                 Debug.WriteLine("User " + username + " already exists");
                 return false;
@@ -111,14 +111,14 @@ namespace MyMedicare
             return true;
         }
 
-        private bool UserNameExists(string username)
+        private async Task<bool> UserNameExists(string username)
         {
             foreach (User u in details.Users)
             {
                 if (u.Username.Equals(username))
                 {
                     MessageDialog dialog = new MessageDialog("Username " + username + " already exists");
-                    dialog.ShowAsync();
+                    await dialog.ShowAsync();
                     return true;
                 }
             }
@@ -169,18 +169,6 @@ namespace MyMedicare
                     details = (UserDetails) serializer.ReadObject(stream);
                 }
                 return true;
-                //StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync("users.dat");
-                //var fs = await file.OpenAsync(FileAccessMode.Read);
-                //BasicProperties fileProperties = await file.GetBasicPropertiesAsync();
-                //byte[] buffer = new byte[fileProperties.Size];
-                //MemoryStream stream = new MemoryStream();
-                //stream.Read(buffer, 0, buffer.Length);
-                //DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(UserDetails));
-                //details = (UserDetails) serializer.ReadObject(stream);
-                //await stream.FlushAsync();
-                //stream.Dispose();
-                //fs.Dispose();
-                //return true;
             }
             catch (FileNotFoundException ex)
             {

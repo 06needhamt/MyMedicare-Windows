@@ -11,8 +11,8 @@
         <TextBlock x:Name="txtbTitle" HorizontalAlignment="Center" Margin="0,20,0,0" TextWrapping="Wrap" Text="Please Register Here" VerticalAlignment="Top" FontSize="48"/>
         <TextBox x:Name="txtUsername" HorizontalAlignment="Center" Margin="0,117,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" PlaceholderText="Username..." Width="378"/>
         <PasswordBox x:Name="txtPassword" HorizontalAlignment="Center" Margin="0,167,0,0" VerticalAlignment="Top" PlaceholderText="Password..." Width="378"/>
-        <TextBox x:Name="txtFirstName" HorizontalAlignment="Center" Margin="0,217,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" PlaceholderText="FirstName..." Width="378"/>
-        <TextBox x:Name="txtLastName" HorizontalAlignment="Center" Margin="0,267,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" PlaceholderText="LastName..." Width="378"/>
+        <TextBox x:Name="txtFirstName" HorizontalAlignment="Center" Margin="0,217,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" PlaceholderText="First Name..." Width="378"/>
+        <TextBox x:Name="txtLastName" HorizontalAlignment="Center" Margin="0,267,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" PlaceholderText="Last Name..." Width="378"/>
         <TextBox x:Name="txtAge" HorizontalAlignment="Center" Margin="0,317,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" PlaceholderText="Age..." Width="378" InputScope="Number"/>
         <TextBox x:Name="txtAddress1" HorizontalAlignment="Center" Margin="0,367,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" PlaceholderText="Address1..." Width="378"/>
         <TextBox x:Name="txtAddress2" HorizontalAlignment="Center" Margin="0,417,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" PlaceholderText="Address2..." Width="378"/>
@@ -20,6 +20,6 @@
         <TextBox x:Name="txtPhoneNumber" HorizontalAlignment="Center" Margin="0,517,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" PlaceholderText="Phone Number..." Width="378" InputScope="TelephoneNumber"/>
         <PasswordBox x:Name="txtReEnterPassword" HorizontalAlignment="Center" Margin="0,567,0,0" VerticalAlignment="Top" PlaceholderText="Re-Enter Password..." Width="378"/>
         <Button x:Name="btnBack" Content="Back" HorizontalAlignment="Right" Margin="0,730,50,0" VerticalAlignment="Top" Width="99" Click="btnBack_Click"/>
-        <Button x:Name="btnLogin" Content="Login" HorizontalAlignment="Center" Margin="0,650,0,0" VerticalAlignment="Top" Width="384" Click="btnLogin_Click"/>
+        <Button x:Name="btnRegister" Content="Register" HorizontalAlignment="Center" Margin="0,650,0,0" VerticalAlignment="Top" Width="384" Click="btnRegister_Click"/>
     </Grid>
 </Page>

@@ -10,8 +10,8 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <TextBlock x:Name="txtbTitle" HorizontalAlignment="Center" Margin="0,20,0,0" TextWrapping="Wrap" Text="Please Login Here" VerticalAlignment="Top" FontSize="48"/>
         <TextBox x:Name="txtUsername" HorizontalAlignment="Center" Margin="0,117,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" PlaceholderText="Username..." Width="378"/>
-        <TextBox x:Name="txtPassword" HorizontalAlignment="Center" Margin="0,217,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" PlaceholderText="Password..." Width="378"/>
-        <Button x:Name="btnLogin" Content="Login" HorizontalAlignment="Center" Margin="0,317,0,0" VerticalAlignment="Top" Width="384"/>
+        <PasswordBox x:Name="txtPassword" HorizontalAlignment="Center" Margin="0,217,0,0" VerticalAlignment="Top" PlaceholderText="Password..." Width="378"/>
+        <Button x:Name="btnLogin" Content="Login" HorizontalAlignment="Center" Margin="0,317,0,0" VerticalAlignment="Top" Width="384" Click="btnLogin_Click"/>
         <Button x:Name="btnBack" Content="Back" HorizontalAlignment="Right" Margin="0,730,50,0" VerticalAlignment="Top" Width="99" Click="btnBack_Click"/>
 
     </Grid>
