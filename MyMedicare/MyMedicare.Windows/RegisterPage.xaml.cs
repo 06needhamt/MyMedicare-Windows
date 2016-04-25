@@ -19,6 +19,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace MyMedicare
@@ -89,7 +90,7 @@ namespace MyMedicare
                 dialog.ShowAsync();
                 return false;
             }
-            if (await ReadUserDetails() || details == null)
+            if (!await ReadUserDetails() || details == null)
             {
                 Debug.WriteLine("No user details found or an error occurred");
                 details = UserDetails.GetInstance();
@@ -102,7 +103,7 @@ namespace MyMedicare
             User newUser = new User(username,password.ToCharArray(),firstname,lastName,
                 Convert.ToInt32(age),address1,address2,phoneNumber,gpName);
             details.AddUser(newUser);
-            if (await WriteUserDetails(details))
+            if (!await WriteUserDetails(details))
             {
                 Debug.WriteLine("Error writing user details");
                 return false;
@@ -127,9 +128,10 @@ namespace MyMedicare
         private async Task<bool> WriteUserDetails(UserDetails details)
         {
             StorageFile file;
-            MemoryStream stream = new MemoryStream();
+            MemoryStream ms = new MemoryStream();
             DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(UserDetails));
-            serializer.WriteObject(stream,details);
+            serializer.WriteObject(ms,details);
+            byte[] buffer = ms.ToArray();
             IStorageItem item = await ApplicationData.Current.LocalFolder.TryGetItemAsync("users.dat");
             if (item == null)
             {
@@ -143,12 +145,13 @@ namespace MyMedicare
                 file = await ApplicationData.Current.LocalFolder.CreateFileAsync("users.dat",
                     Windows.Storage.CreationCollisionOption.ReplaceExisting);
             }
-            var fs = await file.OpenAsync(FileAccessMode.ReadWrite);
-            byte[] buffer = new byte[stream.Length];
-            await Windows.Storage.FileIO.WriteBytesAsync(file,buffer);
-            await stream.FlushAsync();
-            stream.Dispose();
-            fs.Dispose();
+            StorageFolder folder = ApplicationData.Current.LocalFolder;
+            using (var stream = await file.OpenStreamForWriteAsync())
+            {
+                await stream.WriteAsync(buffer, 0, buffer.Length);
+            }
+            await ms.FlushAsync();
+            ms.Dispose();
             return true;
         }
 
@@ -156,18 +159,28 @@ namespace MyMedicare
         {
             try
             {
-                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync("users.dat");
-                var fs = await file.OpenAsync(FileAccessMode.Read);
-                BasicProperties fileProperties = await file.GetBasicPropertiesAsync();
-                byte[] buffer = new byte[fileProperties.Size];
-                MemoryStream stream = new MemoryStream();
-                stream.Read(buffer, 0, buffer.Length);
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(UserDetails));
-                details = (UserDetails) serializer.ReadObject(stream);
-                await stream.FlushAsync();
-                stream.Dispose();
-                fs.Dispose();
+                StorageFolder folder = ApplicationData.Current.LocalFolder;
+                Stream stream = await folder.OpenStreamForReadAsync("users.dat");
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
+                    settings.RootName = "root";
+                    DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(UserDetails), settings);
+                    details = (UserDetails) serializer.ReadObject(stream);
+                }
                 return true;
+                //StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync("users.dat");
+                //var fs = await file.OpenAsync(FileAccessMode.Read);
+                //BasicProperties fileProperties = await file.GetBasicPropertiesAsync();
+                //byte[] buffer = new byte[fileProperties.Size];
+                //MemoryStream stream = new MemoryStream();
+                //stream.Read(buffer, 0, buffer.Length);
+                //DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(UserDetails));
+                //details = (UserDetails) serializer.ReadObject(stream);
+                //await stream.FlushAsync();
+                //stream.Dispose();
+                //fs.Dispose();
+                //return true;
             }
             catch (FileNotFoundException ex)
             {
