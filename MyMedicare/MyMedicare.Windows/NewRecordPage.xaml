@@ -1,0 +1,21 @@
+﻿<Page
+    x:Class="MyMedicare.NewRecordPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyMedicare"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <TextBlock x:Name="txtbTitle" HorizontalAlignment="Center" Margin="0,20,0,0" TextWrapping="Wrap" Text="Enter New Record" VerticalAlignment="Top" FontSize="48"/>
+        <TextBox x:Name="txtTemperature" HorizontalAlignment="Center" Margin="20,140,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="378" PlaceholderText="Temperature" InputScope="Number"/>
+        <RadioButton x:Name="rdbCelcius" Content="Celcius" HorizontalAlignment="Center" Margin="0,80,250,0" VerticalAlignment="Top" GroupName="TempUnit" IsChecked="True"/>
+        <RadioButton x:Name="rdbFahrenheit" Content="Fahrenheit" HorizontalAlignment="Center" Margin="200,80,0,0" VerticalAlignment="Top" GroupName="TempUnit"/>
+        <TextBox x:Name="txtBloodPressureLow" HorizontalAlignment="Center" Margin="20,200,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="378" PlaceholderText="Blood Pressure Low" InputScope="Number"/>
+        <TextBox x:Name="txtBloodPressureHigh" HorizontalAlignment="Center" Margin="20,260,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="378" PlaceholderText="Blood Pressure High" InputScope="Number"/>
+        <TextBox x:Name="txtHeartRate" HorizontalAlignment="Center" Margin="20,320,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="378" PlaceholderText="Heart Rate" InputScope="Number"/>
+        <Button x:Name="btnSubmit" HorizontalAlignment="Center" Margin="20,380,0,0" VerticalAlignment="Top" Width="378" Content="Submit" Click="btnSubmit_Click"/>
+        <Button x:Name="btnBack" Content="Back" HorizontalAlignment="Right" Margin="0,730,50,0" VerticalAlignment="Top" Width="99" Click="btnBack_Click"/>
+    </Grid>
+</Page>

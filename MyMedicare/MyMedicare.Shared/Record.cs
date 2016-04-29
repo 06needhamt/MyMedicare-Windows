@@ -1,22 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace MyMedicare
 {
+    [DataContract()]
     public class Record
     {
+        [DataMember()]
         private User owner;
+        [DataMember()]
         private EnumRiskLevel riskLevel;
+        [DataMember()]
         private EnumTemperatureUnit temperatureUnit;
+        [DataMember()]
         private double temperature;
-        private int bloodPressureLow;
-        private int bloodPressureHigh;
-        private int heartRate;
+        [DataMember()]
+        private double bloodPressureLow;
+        [DataMember()]
+        private double bloodPressureHigh;
+        [DataMember()]
+        private double heartRate;
+        [DataMember()]
         private DateTime timeTaken;
 
         /// <summary>Initializes a new instance of the Record class.</summary>
-        public Record(User owner, EnumRiskLevel riskLevel, EnumTemperatureUnit temperatureUnit, double temperature, int bloodPressureLow, int bloodPressureHigh, int heartRate, DateTime timeTaken)
+        public Record(User owner, EnumRiskLevel riskLevel, EnumTemperatureUnit temperatureUnit, double temperature, double bloodPressureLow, double bloodPressureHigh, double heartRate, DateTime timeTaken)
         {
             this.owner = owner;
             this.riskLevel = riskLevel;
@@ -52,19 +62,19 @@ namespace MyMedicare
             set { temperature = value; }
         }
 
-        public int BloodPressureLow
+        public double BloodPressureLow
         {
             get { return bloodPressureLow; }
             set { bloodPressureLow = value; }
         }
 
-        public int BloodPressureHigh
+        public double BloodPressureHigh
         {
             get { return bloodPressureHigh; }
             set { bloodPressureHigh = value; }
         }
 
-        public int HeartRate
+        public double HeartRate
         {
             get { return heartRate; }
             set { heartRate = value; }

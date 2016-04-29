@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Serialization.Json;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Contacts;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.System;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -16,6 +19,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Bundle_Library;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -46,8 +50,11 @@ namespace MyMedicare
                 await failDialog.ShowAsync();
                 return;
             }
-            MessageDialog successDialog = new MessageDialog("User successfully logged in");
+            MessageDialog successDialog = new MessageDialog("User " + txtUsername.Text + " successfully logged in");
             await successDialog.ShowAsync();
+            Bundle b = new Bundle("LoginPage");
+            b.putString("USERNAME",txtUsername.Text);
+            Frame.Navigate(typeof(MainMenuPage), b);
         }
 
         private async Task<bool> LoginUser()
@@ -101,6 +108,14 @@ namespace MyMedicare
             }
             await ms.FlushAsync();
             ms.Dispose();
+            #if DEBUG
+                string text = await FileIO.ReadTextAsync(file);
+                string[] split = text.Split(new char[] {','});
+                foreach (string str in split)
+                {
+                    Debug.WriteLine(str);
+                }
+            #endif
             return true;
         }
 

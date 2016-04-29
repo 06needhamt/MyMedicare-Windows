@@ -47,6 +47,9 @@ namespace MyMedicare
             {
                 Debug.WriteLine("An Error occurred while registering");
             }
+            MessageDialog dialog = new MessageDialog("User " + txtUsername.Text + " Successfully Registered");
+            await dialog.ShowAsync();
+            Frame.GoBack();
         }
 
         private async Task<bool> RegisterNewUser()
@@ -152,6 +155,14 @@ namespace MyMedicare
             }
             await ms.FlushAsync();
             ms.Dispose();
+            #if DEBUG
+                string text = await FileIO.ReadTextAsync(file);
+                string[] split = text.Split(new char[] { ',' });
+                foreach (string str in split)
+                {
+                    Debug.WriteLine(str);
+                }
+            #endif
             return true;
         }
 

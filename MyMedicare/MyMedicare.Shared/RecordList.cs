@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace MyMedicare
 {
+    [DataContract()]
     public class RecordList
     {
+        [DataMember()]
         public List<Record> Records { get; set; }
+
         private static RecordList instance;
 
         private RecordList()
