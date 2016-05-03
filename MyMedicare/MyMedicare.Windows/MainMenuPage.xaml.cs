@@ -41,7 +41,7 @@ namespace MyMedicare
                 throw new InvalidBundleException("Found Invalid Bundle");
             Bundle b = (Bundle) e.Parameter;
             if(!b.Identifier.Equals("LoginPage"))
-                throw new InvalidBundleException("Found Invalid Bundle");
+                throw new InvalidBundleException("Found Invalid Bundle Origin");
             currentUser = b.getString("USERNAME");
             if(string.IsNullOrEmpty(currentUser))
                 throw new ArgumentException("Invalid User logged in");
@@ -53,6 +53,13 @@ namespace MyMedicare
             Bundle b = new Bundle("MainMenuPage");
             b.putString("USERNAME",currentUser);
             Frame.Navigate(typeof(NewRecordPage), b);
+        }
+
+        private void btnViewRecords_Click(object sender, RoutedEventArgs e)
+        {
+            Bundle b = new Bundle("MainMenuPage");
+            b.putString("USERNAME", currentUser);
+            Frame.Navigate(typeof(ViewRecordsPage), b);
         }
     }
 }

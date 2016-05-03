@@ -1,0 +1,33 @@
+﻿<Page
+    x:Class="MyMedicare.ViewRecordsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MyMedicare"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <local:TemperatureConverter x:Key="tempconv"></local:TemperatureConverter>
+        <local:BloodPressureLowConverter x:Key="bplowconv"></local:BloodPressureLowConverter>
+        <local:BloodPressureHighConverter x:Key="bphighconv"></local:BloodPressureHighConverter>
+        <local:HeartRateConverter x:Key="heartrateconv"></local:HeartRateConverter>
+        <local:RiskLevelConverter x:Key="risklevelconv"></local:RiskLevelConverter>
+    </Page.Resources>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <ListView x:Name="lstRecords" HorizontalAlignment="Left" Height="617" VerticalAlignment="Top" Width="1356" Margin="0,83,0,0" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding TemperatureString}" Foreground="{Binding Converter={StaticResource tempconv}}"></TextBlock>
+                        <TextBlock Text="{Binding BloodPressureLowString}" Foreground="{Binding Converter={StaticResource bplowconv}}"></TextBlock>
+                        <TextBlock Text="{Binding BloodPressureHighString}" Foreground="{Binding Converter={StaticResource bphighconv}}"></TextBlock>
+                        <TextBlock Text="{Binding HeartRateString}" Foreground="{Binding Converter={StaticResource heartrateconv}}"></TextBlock>
+                        <TextBlock Text="{Binding RiskLevelString}" Foreground="{Binding Converter={StaticResource risklevelconv}}"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <TextBlock x:Name="txtbTitle" HorizontalAlignment="Center" Margin="0,20,0,0" TextWrapping="Wrap" Text="View Your Records" VerticalAlignment="Top" FontSize="48"/>
+        <Button x:Name="btnBack" Content="Back" HorizontalAlignment="Right" Margin="0,730,50,0" VerticalAlignment="Top" Width="99" Click="btnBack_Click"/>
+    </Grid>
+</Page>

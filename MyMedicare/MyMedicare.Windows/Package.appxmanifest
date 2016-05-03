@@ -17,11 +17,16 @@
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="MyMedicare.Windows.App">
       <m2:VisualElements DisplayName="MyMedicare.Windows" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="MyMedicare.Windows" ForegroundText="light" BackgroundColor="#464646">
         <m2:SplashScreen Image="Assets\SplashScreen.png" />
+        <m2:InitialRotationPreference>
+          <m2:Rotation Preference="portrait" />
+          <m2:Rotation Preference="landscape" />
+        </m2:InitialRotationPreference>
+        <m2:ApplicationView MinWidth="default" />
       </m2:VisualElements>
       <Extensions>
         <Extension Category="windows.fileTypeAssociation">
           <FileTypeAssociation Name="data">
-            <DisplayName>"Data"</DisplayName>
+            <DisplayName>Binary Data File</DisplayName>
             <SupportedFileTypes>
               <FileType>.dat</FileType>
             </SupportedFileTypes>

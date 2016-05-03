@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
@@ -36,6 +37,24 @@ namespace MyMedicare
             this.bloodPressureHigh = bloodPressureHigh;
             this.heartRate = heartRate;
             this.timeTaken = timeTaken;
+        }
+
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            string unit = "";
+            if (temperatureUnit == EnumTemperatureUnit.CELCIUS)
+                unit = "\u00B0C";
+            else if (temperatureUnit == EnumTemperatureUnit.FAHRENHEIT)
+                unit = "\u2109F";
+            return owner.Username + "\n"
+                   + "Temperature " + temperature + " " + unit + "\n"
+                   + "Blood Pressure Low " + bloodPressureLow + "\n"
+                   + "Blood Pressure High " + bloodPressureHigh + "\n"
+                   + "Heart Rate " + heartRate + "\n"
+                   + "Risk Level " + riskLevel.ToString() + "\n"
+                   + "Time Taken " + timeTaken.ToString() + "\n";
         }
 
         public User Owner
@@ -84,6 +103,55 @@ namespace MyMedicare
         {
             get { return timeTaken; }
             set { timeTaken = value; }
+        }
+
+        public string UnitString
+        {
+            get {
+                if (temperatureUnit == EnumTemperatureUnit.CELCIUS)
+                    return "\u00B0C";
+                else if (temperatureUnit == EnumTemperatureUnit.FAHRENHEIT)
+                    return "\u2109F";
+                return "";
+            }
+        }
+        public string TemperatureString
+        {
+            get
+            {
+                return "Temperature " + temperature + " " + UnitString;
+            }
+        }
+        public string BloodPressureLowString
+        {
+            get
+            {
+                return "Blood Pressure Low " + bloodPressureLow;
+            }
+        }
+        public string BloodPressureHighString
+        {
+            get
+            {
+                return "Blood Pressure High " + bloodPressureHigh;
+            }
+        }
+
+        public string HeartRateString
+        {
+            get
+            {
+                return "Heart Rate " + heartRate;
+            }
+        }
+
+        public string RiskLevelString
+        {
+            get
+            {
+                string str = riskLevel.ToString();
+                return "Risk Level " + str.First().ToString().ToUpper() + str.Substring(1).ToLowerInvariant();
+            }
         }
     }
 }

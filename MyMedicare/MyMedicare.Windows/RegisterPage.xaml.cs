@@ -155,14 +155,6 @@ namespace MyMedicare
             }
             await ms.FlushAsync();
             ms.Dispose();
-            #if DEBUG
-                string text = await FileIO.ReadTextAsync(file);
-                string[] split = text.Split(new char[] { ',' });
-                foreach (string str in split)
-                {
-                    Debug.WriteLine(str);
-                }
-            #endif
             return true;
         }
 
@@ -185,9 +177,21 @@ namespace MyMedicare
             {
                 StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync("users.dat");
                 details = UserDetails.GetInstance();
+                if (!await CreateAdminUser())
+                {
+                    throw new Exception("Unable To Create Admin User");
+                }
                 return true;
             }
             return false;
+        }
+
+        private async Task<bool> CreateAdminUser()
+        {
+            User admin = new User("admin",new char[] {'r','o','o','t'},"admin","admin",int.MaxValue,"admin","admin","00000000000","admin");
+            details.AddUser(admin);
+            Debug.WriteLine("Admin Created");
+            return details.Users.Contains(admin);
         }
     }
 }

@@ -15,11 +15,17 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)BloodPressureHighConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BloodPressureLowConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contact.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnumRiskLevel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnumTemperatureUnit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HeartRateConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Record.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RiskLevelConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TemperatureConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RecordList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RecordViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)User.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserDetails.cs" />
   </ItemGroup>

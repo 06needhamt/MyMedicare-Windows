@@ -108,14 +108,6 @@ namespace MyMedicare
             }
             await ms.FlushAsync();
             ms.Dispose();
-            #if DEBUG
-                string text = await FileIO.ReadTextAsync(file);
-                string[] split = text.Split(new char[] {','});
-                foreach (string str in split)
-                {
-                    Debug.WriteLine(str);
-                }
-            #endif
             return true;
         }
 

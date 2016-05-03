@@ -63,15 +63,6 @@ namespace MyMedicare
         private async void btnSubmit_Click(object sender, RoutedEventArgs e)
         {
             Record r;
-            //#if DEBUG // TODO Remove
-            //    StorageFile file;
-            //    IStorageItem item = await ApplicationData.Current.LocalFolder.TryGetItemAsync("users.dat");
-            //    if (item != null)
-            //    {
-            //        file = await ApplicationData.Current.LocalFolder.GetFileAsync("users.dat");
-            //        await file.DeleteAsync();
-            //    }
-            //#endif
 
             if (!await CheckFormInput())
             {
@@ -85,10 +76,10 @@ namespace MyMedicare
                 Debug.WriteLine("An Error occurred while creating the record");
                 return;    
             }
-            if (!await ReadRecordData() && records == null)
+            if (!await ReadRecordData() || records == null)
             {
-                Debug.WriteLine("No records found or an error occurred");
-                return;
+                Debug.WriteLine("No records found");
+                records = RecordList.GetInstance();
             }
             records.AddRecord(r);
             if (!await WriteRecordData(records))
@@ -151,12 +142,16 @@ namespace MyMedicare
             {
                 StorageFolder folder = ApplicationData.Current.LocalFolder;
                 Stream stream = await folder.OpenStreamForReadAsync("records.dat");
-                using (StreamReader reader = new StreamReader(stream))
+                if (stream.Length > 0)
                 {
-                    DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
-                    settings.RootName = "root";
-                    DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(RecordList), settings);
-                    records = (RecordList)serializer.ReadObject(stream);
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
+                        settings.RootName = "root";
+                        DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(RecordList),
+                            settings);
+                        records = (RecordList) serializer.ReadObject(stream);
+                    }
                 }
                 return true;
             }
@@ -196,14 +191,6 @@ namespace MyMedicare
             }
             await ms.FlushAsync();
             ms.Dispose();
-            #if DEBUG
-                string text = await FileIO.ReadTextAsync(file);
-                string[] split = text.Split(new char[] { ',' });
-                foreach (string str in split)
-                {
-                    Debug.WriteLine(str);
-                }
-            #endif
             return true;
         }
 
