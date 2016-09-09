@@ -107,7 +107,7 @@ namespace MyMedicare
             try
             {
                 StorageFolder folder = ApplicationData.Current.LocalFolder;
-                Stream stream = await folder.OpenStreamForReadAsync("users.dat");
+                Stream stream = await folder.OpenStreamForReadAsync("users.medi");
                 using (StreamReader reader = new StreamReader(stream))
                 {
                     DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
@@ -119,7 +119,7 @@ namespace MyMedicare
             }
             catch (FileNotFoundException ex)
             {
-                StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync("users.dat");
+                StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync("users.medi");
                 details = UserDetails.GetInstance();
                 return true;
             }

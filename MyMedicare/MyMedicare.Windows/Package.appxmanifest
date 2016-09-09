@@ -25,10 +25,10 @@
       </m2:VisualElements>
       <Extensions>
         <Extension Category="windows.fileTypeAssociation">
-          <FileTypeAssociation Name="data">
-            <DisplayName>Binary Data File</DisplayName>
+          <FileTypeAssociation Name="medicaredatafile">
+            <DisplayName>Medicare Data File</DisplayName>
             <SupportedFileTypes>
-              <FileType>.dat</FileType>
+              <FileType>.medi</FileType>
             </SupportedFileTypes>
           </FileTypeAssociation>
         </Extension>
